@@ -9,7 +9,6 @@ let count = 0;
 
 function getData(req, res, next) {
   count++;
-  console.log(cashed);
   if (count === 4) {
     count = 0;
     cashed = {};
@@ -80,6 +79,7 @@ function getVideo(req, res, next) {
   let tempUrl =
     "https://images-assets.nasa.gov/video/XRT20170910_Al_poly_noaxis/collection.json";
   let URL;
+  let thumImage = "http://images-assets.nasa.gov/video/XRT20170910_Al_poly_noaxis/XRT20170910_Al_poly_noaxis~small_1.jpg"
 
   for (let indexParent = 0; indexParent < arr.length; indexParent++) {
     URL = arr[indexParent].href || tempUrl;
@@ -87,6 +87,13 @@ function getVideo(req, res, next) {
       .get(URL)
       .then((data) => {
         for (let index = 0; index < data.data.length; index++) {
+            if(
+              data.data[index].endsWith(".png")||
+              data.data[index].endsWith(".jpg")
+            ){
+                thumImage = data.data[index]
+
+            }
           if (
             data.data[index].endsWith("orig.mp4") ||
             data.data[index].endsWith("large.mp4") ||
@@ -96,6 +103,7 @@ function getVideo(req, res, next) {
           ) {
             let obj = {
               ...arr[indexParent],
+              thum : thumImage,
               url:
                 data.data[index] ||
                 "http://images-assets.nasa.gov/video/XRT20170910_Al_poly_noaxis/XRT20170910_Al_poly_noaxis~preview.mp4",

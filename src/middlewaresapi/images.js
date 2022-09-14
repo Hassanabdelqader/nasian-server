@@ -9,7 +9,6 @@ let count = 0;
 
 function getDataImages(req, res, next) {
   count++;
-  console.log(count);
   if (count === 7) {
     count = 0;
     cashed[req.query.q] = null;
