@@ -26,6 +26,7 @@ function getData(req, res, next) {
     photographer: "",
     date_created: "",
     center: "",
+    thumb:""
   };
 
   axios
@@ -59,6 +60,7 @@ function getData(req, res, next) {
               data.data.collection.items[index].data[0].photographer ||
               "Unavailable Photographer Name : ";
             obj.center = data.data.collection.items[index].data[0].center;
+            obj.thumb = data.data.collection.items[index].links[0].href;
             arr.push(obj);
             count++;
             if (count === 100) break;
@@ -79,7 +81,6 @@ function getVideo(req, res, next) {
   let tempUrl =
     "https://images-assets.nasa.gov/video/XRT20170910_Al_poly_noaxis/collection.json";
   let URL;
-  let thumImage = "http://images-assets.nasa.gov/video/XRT20170910_Al_poly_noaxis/XRT20170910_Al_poly_noaxis~small_1.jpg"
 
   for (let indexParent = 0; indexParent < arr.length; indexParent++) {
     URL = arr[indexParent].href || tempUrl;
@@ -87,13 +88,6 @@ function getVideo(req, res, next) {
       .get(URL)
       .then((data) => {
         for (let index = 0; index < data.data.length; index++) {
-            if(
-              data.data[index].endsWith(".png")||
-              data.data[index].endsWith(".jpg")
-            ){
-                thumImage = data.data[index]
-
-            }
           if (
             data.data[index].endsWith("orig.mp4") ||
             data.data[index].endsWith("large.mp4") ||
@@ -103,7 +97,6 @@ function getVideo(req, res, next) {
           ) {
             let obj = {
               ...arr[indexParent],
-              thum : thumImage,
               url:
                 data.data[index] ||
                 "http://images-assets.nasa.gov/video/XRT20170910_Al_poly_noaxis/XRT20170910_Al_poly_noaxis~preview.mp4",
