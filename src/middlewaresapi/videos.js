@@ -63,7 +63,7 @@ function getData(req, res, next) {
             obj.thumb = data.data.collection.items[index].links[0].href;
             arr.push(obj);
             count++;
-            if (count === 100) break;
+            if (count === 30) break;
           }
         }
         next();
